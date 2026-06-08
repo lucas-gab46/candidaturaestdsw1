@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Vagas de Estágio</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header>
+    <h1>Vagas de Estágio</h1>
+    <p>Listagem pública de vagas persistidas com JPA.</p>
+    <a href="/">Voltar</a>
+</header>
+
+<main>
+    <section class="card" th:each="vaga : ${vagas}">
+        <h2 th:text="${vaga.titulo}">Título da vaga</h2>
+        <p><strong>Empresa:</strong> <span th:text="${vaga.empresa.nome}">Empresa</span></p>
+        <p><strong>Área:</strong> <span th:text="${vaga.areaAtuacao}">Área</span></p>
+        <p><strong>Modalidade:</strong> <span th:text="${vaga.modalidade}">Modalidade</span></p>
+        <p><strong>Cidade:</strong> <span th:text="${vaga.cidade}">Cidade</span></p>
+        <p><strong>Status:</strong> <span th:text="${vaga.status}">Status</span></p>
+        <p><strong>Bolsa:</strong> R$ <span th:text="${vaga.valorBolsa}">0.00</span></p>
+        <p th:text="${vaga.descricao}">Descrição</p>
+    </section>
+</main>
+</body>
+</html>

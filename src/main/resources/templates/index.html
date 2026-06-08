@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Sistema de Estágios</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header>
+    <h1>Sistema para Candidatura e Seleção de Vagas de Estágio</h1>
+    <p>Projeto T5 com Spring MVC, Thymeleaf, JPA, Spring Data JPA e REST API.</p>
+</header>
+
+<main>
+    <section class="card">
+        <h2>Vagas públicas</h2>
+        <p>Esta página usa Thymeleaf para exibir vagas cadastradas no banco H2.</p>
+        <a href="/vagas">Visualizar vagas</a>
+    </section>
+
+    <section class="card">
+        <h2>Endpoints REST</h2>
+        <ul>
+            <li><code>GET /api/administradores</code></li>
+            <li><code>GET /api/candidatos</code></li>
+            <li><code>GET /api/empresas</code></li>
+            <li><code>GET /api/vagas</code></li>
+            <li><code>GET /api/candidaturas</code></li>
+        </ul>
+    </section>
+
+    <section class="card">
+        <h2>Banco H2</h2>
+        <p>URL do console: <code>/h2-console</code></p>
+        <p>JDBC URL: <code>jdbc:h2:mem:candidaturadb</code></p>
+        <p>Usuário: <code>sa</code></p>
+    </section>
+</main>
+</body>
+</html>
