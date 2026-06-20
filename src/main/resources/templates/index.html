@@ -7,10 +7,19 @@
 </head>
 <body>
 <header>
-    <h1>Sistema para Candidatura e Seleção de Vagas de Estágio</h1>
-    <p>Projeto T5 com Spring MVC, Thymeleaf, JPA, Spring Data JPA e REST API.</p>
+    <div>
+        <h1>Sistema para Candidatura e Seleção de Vagas de Estágio</h1>
+        <h1>lucas-gab46</h1>
+        <p>Projeto T5 a T8.</p>
+    </div>
+    <nav>
+        <a th:if="${session.empresaId == null and session.admin != true}" th:href="@{/login}">Login Empresarial</a>
+        <a th:if="${session.empresaId != null}" th:href="@{/empresa/vagas}">Painel da Empresa</a>
+        <a th:if="${session.admin == true}" th:href="@{/admin/empresas}">Painel da Administração</a>
+        <a th:if="${session.empresaId != null or session.admin == true}" th:href="@{/logout}">Sair</a>
+    </nav>
 </header>
-
+    
 <main>
     <section class="card">
         <h2>Vagas públicas</h2>

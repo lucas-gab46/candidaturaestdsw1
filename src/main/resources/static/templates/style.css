@@ -1,0 +1,112 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: radial-gradient(circle at top left, #5c6ac4 0%, #2f3d8f 35%, #161b3a 100%);
+  color: #1f2937;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.login-container {
+  width: min(100%, 420px);
+  background: rgba(255, 255, 255, 0.97);
+  border-radius: 24px;
+  box-shadow: 0 22px 60px rgba(14, 30, 80, 0.18);
+  padding: 34px 32px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.login-container h1 {
+  text-align: center;
+  margin-bottom: 24px;
+  color: #1f2937;
+  font-size: 1.75rem;
+}
+
+.form-action {
+  display: grid;
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.form-action label {
+  font-size: 0.95rem;
+  color: #334155;
+}
+
+.form-action input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  background: #f8fafc;
+  color: #0f172a;
+  font-size: 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-action input:focus {
+  outline: none;
+  border-color: #5c6ac4;
+  box-shadow: 0 0 0 4px rgba(92, 106, 196, 0.15);
+}
+
+.form-submit {
+  width: 100%;
+}
+
+.form-submit button {
+  width: 100%;
+  padding: 14px 16px;
+  border: none;
+  border-radius: 12px;
+  background-color: #4f46e5;
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.form-submit button:hover {
+  background-color: #4338ca;
+  transform: translateY(-1px);
+}
+
+.form-request {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 18px;
+  font-size: 0.95rem;
+}
+
+.form-request p {
+  color: #64748b;
+}
+
+.form-request button {
+  border: none;
+  background: transparent;
+  color: #3b82f6;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.error-message {
+  margin-top: 12px;
+  padding: 12px 14px;
+  background: #fee2e2;
+  border: 1px solid #fecaca;
+  border-radius: 12px;
+  color: #991b1b;
+  font-size: 0.95rem;
+}

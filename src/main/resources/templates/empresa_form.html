@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Empresa</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header>
+    <h1 th:text="${empresa.id} != null ? 'Editar Empresa' : 'Nova Empresa'"></h1>
+    <nav>
+        <a href="/">Home</a> |
+        <a href="/admin/empresas">Voltar</a>
+    </nav>
+</header>
+<main>
+    <form th:action="@{/admin/empresas}" th:object="${empresa}" method="post">
+        <input type="hidden" th:field="*{id}">
+        <div>
+            <label>Nome</label>
+            <input type="text" th:field="*{nome}" required>
+        </div>
+        <div>
+            <label>Endereço</label>
+            <input type="text" th:field="*{endereco}">
+        </div>
+        <div>
+            <label>Descrição</label>
+            <textarea th:field="*{descricao}"></textarea>
+        </div>
+        <div>
+            <button type="submit">Salvar</button>
+        </div>
+    </form>
+</main>
+</body>
+</html>

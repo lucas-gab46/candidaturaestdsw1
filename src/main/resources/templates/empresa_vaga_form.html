@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Nova Vaga</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header>
+    <div>
+        <h1>Cadastro de Vaga</h1>
+        <p>Preencha os dados da vaga para publicar o processo seletivo.</p>
+    </div>
+    <nav>
+        <a th:href="@{/empresa/vagas}">Voltar</a>
+        <a th:href="@{/logout}">Sair</a>
+    </nav>
+</header>
+<main>
+    <form th:action="@{/empresa/vagas}" th:object="${vaga}" method="post">
+        <div>
+            <label for="titulo">Título da vaga</label>
+            <input type="text" id="titulo" th:field="*{titulo}" required>
+        </div>
+        <div>
+            <label for="descricao">Descrição</label>
+            <textarea id="descricao" th:field="*{descricao}" required></textarea>
+        </div>
+        <div>
+            <label for="areaAtuacao">Área de atuação</label>
+            <input type="text" id="areaAtuacao" th:field="*{areaAtuacao}" required>
+        </div>
+        <div>
+            <label for="requisitos">Requisitos</label>
+            <textarea id="requisitos" th:field="*{requisitos}" required></textarea>
+        </div>
+        <div>
+            <label for="cargaHoraria">Carga horária (horas/semana)</label>
+            <input type="number" id="cargaHoraria" th:field="*{cargaHoraria}" min="1" required>
+        </div>
+        <div>
+            <label for="modalidade">Modalidade</label>
+            <select id="modalidade" th:field="*{modalidade}" required>
+                <option th:each="modalidade : ${modalidades}" th:value="${modalidade}" th:text="${modalidade}"></option>
+            </select>
+        </div>
+        <div>
+            <label for="valorBolsa">Remuneração</label>
+            <input type="number" step="0.01" id="valorBolsa" th:field="*{valorBolsa}" required>
+        </div>
+        <div>
+            <label for="beneficios">Benefícios</label>
+            <textarea id="beneficios" th:field="*{beneficios}"></textarea>
+        </div>
+        <div>
+            <label for="cidade">Cidade</label>
+            <input type="text" id="cidade" th:field="*{cidade}" required>
+        </div>
+        <div>
+            <label for="dataLimite">Data limite de inscrição</label>
+            <input type="date" id="dataLimite" th:field="*{dataLimite}" required>
+        </div>
+        <div>
+            <button type="submit">Cadastrar vaga</button>
+        </div>
+    </form>
+</main>
+</body>
+</html>

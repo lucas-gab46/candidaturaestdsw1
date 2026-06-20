@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Vagas da Empresa</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header>
+    <div>
+        <h1 th:text="${empresa.nome} + ' - Vagas'">Painel da Empresa</h1>
+        <p>Cadastre e acompanhe suas vagas de estágio/trabalho.</p>
+    </div>
+    <nav>
+        <a th:href="@{/}">Voltar</a>
+        <a th:href="@{/empresa/vagas/novo}">Nova Vaga</a>
+        <a th:href="@{/logout}">Sair</a>
+    </nav>
+</header>
+<main>
+    <section class="card" th:if="${vagas.empty}">
+        <h2>Nenhuma vaga cadastrada</h2>
+        <p>Use o botão "Nova Vaga" para cadastrar uma vaga de estágio/trabalho.</p>
+    </section>
+    <section class="card" th:each="vaga : ${vagas}">
+        <h2 th:text="${vaga.titulo}">Vaga</h2>
+        <p><strong>CNPJ:</strong> <span th:text="${vaga.empresa.cnpj}">00.000.000/0000-00</span></p>
+        <p><strong>Descrição:</strong> <span th:text="${vaga.descricao}">Descrição</span></p>
+        <p><strong>Remuneração:</strong> R$ <span th:text="${vaga.valorBolsa}">0.00</span></p>
+        <p><strong>Data limite de inscrição:</strong> <span th:text="${vaga.dataLimite}">YYYY-MM-DD</span></p>
+        <p><strong>Status:</strong> <span th:text="${vaga.status}">ABERTA</span></p>
+    </section>
+</main>
+</body>
+</html>

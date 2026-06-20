@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Profissional</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header>
+    <h1 th:text="${profissional.id} != null ? 'Editar Profissional' : 'Novo Profissional'"></h1>
+    <nav>
+        <a href="/">Home</a> |
+        <a href="/admin/profissionais">Voltar</a>
+    </nav>
+</header>
+<main>
+    <form th:action="@{/admin/profissionais}" th:object="${profissional}" method="post">
+        <input type="hidden" th:field="*{id}">
+        <div>
+            <label>Nome</label>
+            <input type="text" th:field="*{nome}" required>
+        </div>
+        <div>
+            <label>Email</label>
+            <input type="email" th:field="*{email}">
+        </div>
+        <div>
+            <label>Telefone</label>
+            <input type="text" th:field="*{telefone}">
+        </div>
+        <div>
+            <label>Cargo</label>
+            <input type="text" th:field="*{cargo}">
+        </div>
+        <div>
+            <button type="submit">Salvar</button>
+        </div>
+    </form>
+</main>
+</body>
+</html>
