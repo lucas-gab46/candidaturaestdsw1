@@ -3,12 +3,15 @@ package br.com.lucas.candidaturaestagio.controller;
 import br.com.lucas.candidaturaestagio.model.Empresa;
 import br.com.lucas.candidaturaestagio.repository.EmpresaRepository;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
 
 import java.util.Optional;
 
@@ -42,9 +45,30 @@ public class EmpresaController {
     }
 
     @PostMapping
-    public String salvar(Empresa empresa, HttpSession session) {
+    public String salvar(@Valid Empresa empresa,
+                         BindingResult result,
+                         Model model,
+                         HttpSession session) {
         if (!isAdmin(session)) return "redirect:/login";
-        empresaRepository.save(empresa);
+        Optional<Empresa> existingByEmail = empresa.getEmail() != null ? empresaRepository.findByEmail(empresa.getEmail()) : Optional.empty();
+        if (existingByEmail.isPresent() && !existingByEmail.get().getId().equals(empresa.getId())) {
+            result.rejectValue("email", "duplicate.email", "Já existe uma empresa cadastrada com este e-mail");
+        }
+        Optional<Empresa> existingByCnpj = empresa.getCnpj() != null ? empresaRepository.findByCnpj(empresa.getCnpj()) : Optional.empty();
+        if (existingByCnpj.isPresent() && !existingByCnpj.get().getId().equals(empresa.getId())) {
+            result.rejectValue("cnpj", "duplicate.cnpj", "Já existe uma empresa cadastrada com este CNPJ");
+        }
+        if (result.hasErrors()) {
+            model.addAttribute("empresa", empresa);
+            return "empresa_form";
+        }
+        try {
+            empresaRepository.save(empresa);
+        } catch (Exception ex) {
+            model.addAttribute("error", "Não foi possível salvar a empresa. Verifique os dados e tente novamente.");
+            model.addAttribute("empresa", empresa);
+            return "empresa_form";
+        }
         return "redirect:/admin/empresas";
     }
 

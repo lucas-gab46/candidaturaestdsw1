@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Avaliar Candidatura</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header>
+    <nav>
+        <a th:if="${session.empresaId == null and session.admin != true and session.candidatoId == null}" th:href="@{/login}">Login Empresarial</a>
+        <a th:if="${session.candidatoId == null}" th:href="@{/candidato/login}">Login Candidato</a>
+        <a th:if="${session.candidatoId == null}" th:href="@{/candidato/register}">Cadastro Candidato</a>
+        <a th:if="${session.empresaId != null}" th:href="@{/empresa/vagas}">Painel da Empresa</a>
+        <a th:if="${session.admin == true}" th:href="@{/admin/empresas}">Painel da Administração</a>
+        <a th:if="${session.empresaId != null or session.admin == true or session.candidatoId != null}" th:href="@{/logout}">Sair</a>
+    </nav>
+</header>
+<main>
+    <section class="card">
+        <h1>Avaliar Candidatura</h1>
+        <p><strong>Vaga:</strong> <span th:text="${candidatura.vaga.titulo}"></span></p>
+        <p><strong>Candidato:</strong> <span th:text="${candidatura.candidato.nome}"></span></p>
+        <p><strong>E-mail:</strong> <span th:text="${candidatura.candidato.email}"></span></p>
+        <p><strong>Currículo:</strong> <span th:text="${candidatura.curriculo}">Currículo</span></p>
+
+        <form th:action="@{/empresa/candidaturas/{id}/avaliar(id=${candidatura.id})}" th:object="${candidatura}" method="post">
+            <label for="status">Status</label>
+            <select id="status" th:field="*{status}" required>
+                <option th:each="statusOption : ${statusOptions}"
+                        th:value="${statusOption}"
+                        th:text="${statusOption}"></option>
+            </select>
+            <div th:errors="*{status}" class="error-message"></div>
+
+            <label for="dataEntrevista">Data da Entrevista</label>
+            <input type="date" id="dataEntrevista" th:field="*{dataEntrevista}">
+            <div th:errors="*{dataEntrevista}" class="error-message"></div>
+
+            <label for="horarioEntrevista">Horário da Entrevista</label>
+            <input type="time" id="horarioEntrevista" th:field="*{horarioEntrevista}">
+            <div th:errors="*{horarioEntrevista}" class="error-message"></div>
+
+            <label for="linkVideoconferencia">Link Google Meet</label>
+            <input type="url" id="linkVideoconferencia" th:field="*{linkVideoconferencia}">
+            <div th:errors="*{linkVideoconferencia}" class="error-message"></div>
+
+            <label for="justificativaRecusa">Carta Recusão</label>
+            <textarea id="justificativaRecusa" th:field="*{justificativaRecusa}" rows="4"></textarea>
+            <div th:errors="*{justificativaRecusa}" class="error-message"></div>
+
+            <button type="submit">Salvar</button>
+        </form>
+        <div th:if="${#fields.hasErrors('*')}">
+            <p class="error-message">Erro no formulário.</p>
+        </div>
+    </section>
+</main>
+</body>
+</html>

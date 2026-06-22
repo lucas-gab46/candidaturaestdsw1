@@ -1,20 +1,26 @@
 package br.com.lucas.candidaturaestagio.controller;
 
 import br.com.lucas.candidaturaestagio.model.Vaga;
+import br.com.lucas.candidaturaestagio.repository.CandidaturaRepository;
 import br.com.lucas.candidaturaestagio.repository.VagaRepository;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class HomeController {
 
     private final VagaRepository vagaRepository;
+    private final CandidaturaRepository candidaturaRepository;
 
-    public HomeController(VagaRepository vagaRepository) {
+    public HomeController(VagaRepository vagaRepository, CandidaturaRepository candidaturaRepository) {
         this.vagaRepository = vagaRepository;
+        this.candidaturaRepository = candidaturaRepository;
     }
 
     @GetMapping("/")
@@ -24,17 +30,23 @@ public class HomeController {
     }
 
     @GetMapping("/vagas")
-    public String vagas(Model model) {
+    public String vagas(Model model, HttpSession session) {
         List<Vaga> vagas = vagaRepository.findAll();
-        if (!vagas.isEmpty()) {
-            model.addAttribute("vaga1", vagas.get(0));
+        model.addAttribute("vagas", vagas);
+
+        Long candidatoId = getCandidatoId(session);
+        if (candidatoId != null) {
+            Map<Long, Boolean> vagasInscritas = new HashMap<>();
+            candidaturaRepository.findByCandidatoId(candidatoId)
+                    .forEach(candidatura -> vagasInscritas.put(candidatura.getVaga().getId(), true));
+            model.addAttribute("vagasInscritas", vagasInscritas);
         }
-        if (vagas.size() > 1) {
-            model.addAttribute("vaga2", vagas.get(1));
-        }
-        if (vagas.size() > 2) {
-            model.addAttribute("vaga3", vagas.get(2));
-        }
+
         return "vagas";
+    }
+
+    private Long getCandidatoId(HttpSession session) {
+        Object candidatoId = session.getAttribute("candidatoId");
+        return candidatoId instanceof Long ? (Long) candidatoId : null;
     }
 }

@@ -32,7 +32,6 @@ public class LoginController {
     public String login(@RequestParam(name = "username", required = false) String username,
                         @RequestParam(name = "password", required = false) String password,
                         HttpServletRequest request, Model model) {
-        // Suporte legado: aceitar parâmetros 'email'/'senha' em português também
         if ((username == null || username.isBlank()) && request.getParameter("email") != null) {
             username = request.getParameter("email");
         }

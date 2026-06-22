@@ -9,11 +9,13 @@
 <header>
     <div>
         <h1 th:text="${empresa.nome} + ' - Vagas'">Painel da Empresa</h1>
+        
         <p>Cadastre e acompanhe suas vagas de estágio/trabalho.</p>
     </div>
     <nav>
         <a th:href="@{/}">Voltar</a>
         <a th:href="@{/empresa/vagas/novo}">Nova Vaga</a>
+        <a th:href="@{/empresa/candidaturas}">Candidaturas</a>
         <a th:href="@{/logout}">Sair</a>
     </nav>
 </header>

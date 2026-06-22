@@ -128,40 +128,6 @@ public class CandidaturaEstagioApplication extends SpringBootServletInitializer 
             vagaRepository.save(vaga3);
 
 
-             Vaga vaga2 = new Vaga(
-                    empresa,
-                    "Estágio em Desenvolvimento Movel",
-                    "Atuação com Java, Flutter e React Native.",
-                    "Tecnologia",
-                    "Conhecimentos básicos em Front-end e Mobile.",
-                    30,
-                    ModalidadeTrabalho.PRESENCIAL,
-                    new BigDecimal("1500.00"),
-                    "Vale transporte e possibilidade de efetivação.",
-                    "São Carlos",
-                    LocalDate.now().plusDays(30),
-                    StatusVaga.ABERTA
-            );
-            vagaRepository.save(vaga);
-
-            Vaga vaga3 = new Vaga(
-                    empresa,
-                    "Estágio em Desenvolvimento Front-end",
-                    "Atuação com JavaScript.",
-                    "Tecnologia",
-                    "Conhecimentos básicos em Front-end.",
-                    30,
-                    ModalidadeTrabalho.PRESENCIAL,
-                    new BigDecimal("3500.00"),
-                    "Vale transporte e possibilidade de efetivação.",
-                    "São Carlos",
-                    LocalDate.now().plusDays(30),
-                    StatusVaga.FECHADA
-            );
-            vagaRepository.save(vaga);
-
-
-
             
 
             Candidatura candidatura = new Candidatura(

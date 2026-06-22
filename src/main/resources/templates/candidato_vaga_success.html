@@ -2,16 +2,11 @@
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Sistema de Estágios</title>
+    <title>Cadastro de Candidatura</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
 <header>
-    <div>
-        <h1>Sistema para Candidatura e Seleção de Vagas de Estágio</h1>
-        <h1>lucas-gab46</h1>
-        <p>Projeto T5 a T8.</p>
-    </div>
     <nav>
         <a th:if="${session.empresaId == null and session.admin != true and session.candidatoId == null}" th:href="@{/login}">Login Empresarial</a>
         <a th:if="${session.candidatoId == null}" th:href="@{/candidato/login}">Login Candidato</a>
@@ -21,14 +16,21 @@
         <a th:if="${session.empresaId != null or session.admin == true or session.candidatoId != null}" th:href="@{/logout}">Sair</a>
     </nav>
 </header>
-    
 <main>
     <section class="card">
-        <h2>Vagas públicas</h2>
-        <a href="/vagas">Visualizar vagas</a>
+        <h1>Parabéns!</h1>
+        <p>Você se candidatou com sucesso à vaga:</p>
+        <h2 th:text="${vaga.titulo}">Título da vaga</h2>
+        <p><strong>Empresa:</strong> <span th:text="${vaga.empresa.nome}">Empresa</span></p>
+        <p><strong>Área:</strong> <span th:text="${vaga.areaAtuacao}">Área</span></p>
+        <p><strong>Modalidade:</strong> <span th:text="${vaga.modalidade}">Modalidade</span></p>
+        <p><strong>Cidade:</strong> <span th:text="${vaga.cidade}">Cidade</span></p>
+        <p><strong>Bolsa:</strong> R$ <span th:text="${vaga.valorBolsa}">0.00</span></p>
+        <div>
+            <a th:href="@{/candidato/candidaturas}">Ver minhas candidaturas</a>
+            <a th:href="@{/vagas}">Voltar para vagas</a>
+        </div>
     </section>
-
-   
 </main>
 </body>
 </html>

@@ -2,7 +2,7 @@
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Empresa</title>
+    <title>Formulário de Empresa</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
@@ -16,17 +16,51 @@
 <main>
     <form th:action="@{/admin/empresas}" th:object="${empresa}" method="post">
         <input type="hidden" th:field="*{id}">
+        <div th:if="${error}" class="error-message">
+            <p th:text="${error}"></p>
+        </div>
+        <div th:if="${#fields.hasErrors('*')}" class="error-message">
+            <p>Existem erros no formulário. Verifique os campos destacados.</p>
+        </div>
+        <div>
+            <label>Email</label>
+            <input type="email" th:field="*{email}" required>
+            <div th:errors="*{email}" class="error-message"></div>
+        </div>
+        <div>
+            <label>Senha</label>
+            <input type="password" th:field="*{senha}" required>
+            <div th:errors="*{senha}" class="error-message"></div>
+        </div>
+        <div>
+            <label>CNPJ</label>
+            <input type="text" th:field="*{cnpj}" placeholder="00.000.000/0000-00" required>
+            <div th:errors="*{cnpj}" class="error-message"></div>
+        </div>
         <div>
             <label>Nome</label>
             <input type="text" th:field="*{nome}" required>
+            <div th:errors="*{nome}" class="error-message"></div>
         </div>
         <div>
-            <label>Endereço</label>
-            <input type="text" th:field="*{endereco}">
+            <label>Telefone</label>
+            <input type="text" th:field="*{telefone}" required>
+            <div th:errors="*{telefone}" class="error-message"></div>
+        </div>
+        <div>
+            <label>Área de atuação</label>
+            <input type="text" th:field="*{areaAtuacao}" required>
+            <div th:errors="*{areaAtuacao}" class="error-message"></div>
+        </div>
+        <div>
+            <label>Cidade</label>
+            <input type="text" th:field="*{cidade}" required>
+            <div th:errors="*{cidade}" class="error-message"></div>
         </div>
         <div>
             <label>Descrição</label>
             <textarea th:field="*{descricao}"></textarea>
+            <div th:errors="*{descricao}" class="error-message"></div>
         </div>
         <div>
             <button type="submit">Salvar</button>
