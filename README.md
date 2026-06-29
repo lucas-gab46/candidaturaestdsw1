@@ -13,3 +13,7 @@ Maven
 JPA 
 Rest-API
 Banco usado : MySQL/H2
+admin : admin@sistema.com
+        admin1234
+
+Login empresarial tem que criar empresa primeiro pra logar como empresa
