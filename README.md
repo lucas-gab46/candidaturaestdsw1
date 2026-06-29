@@ -13,6 +13,8 @@ Maven
 JPA 
 Rest-API
 Banco usado : MySQL/H2
+
+
 admin : admin@sistema.com
         admin1234
 
