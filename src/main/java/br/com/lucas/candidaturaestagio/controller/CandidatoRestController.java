@@ -2,6 +2,7 @@ package br.com.lucas.candidaturaestagio.controller;
 
 import br.com.lucas.candidaturaestagio.model.Candidato;
 import br.com.lucas.candidaturaestagio.repository.CandidatoRepository;
+import br.com.lucas.candidaturaestagio.service.CandidatoService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,9 +21,11 @@ import java.util.List;
 public class CandidatoRestController {
 
     private final CandidatoRepository candidatoRepository;
+    private final CandidatoService candidatoService;
 
-    public CandidatoRestController(CandidatoRepository candidatoRepository) {
+    public CandidatoRestController(CandidatoRepository candidatoRepository, CandidatoService candidatoService) {
         this.candidatoRepository = candidatoRepository;
+        this.candidatoService = candidatoService;
     }
 
     @GetMapping
@@ -39,7 +42,7 @@ public class CandidatoRestController {
 
     @PostMapping
     public Candidato cadastrar(@Valid @RequestBody Candidato candidato) {
-        return candidatoRepository.save(candidato);
+        return candidatoService.registrar(candidato);
     }
 
     @PutMapping("/{id}")
@@ -47,7 +50,13 @@ public class CandidatoRestController {
         return candidatoRepository.findById(id)
                 .map(candidato -> {
                     candidato.setEmail(dados.getEmail());
-                    candidato.setSenha(dados.getSenha());
+                    if (dados.getSenha() != null && !dados.getSenha().isEmpty() && !dados.getSenha().startsWith("$2a$")) {
+                        candidato.setSenha(dados.getSenha());
+                        candidatoService.registrar(candidato);
+                    } else if (dados.getSenha() != null && !dados.getSenha().isEmpty()) {
+                        candidato.setSenha(dados.getSenha());
+                        candidatoRepository.save(candidato);
+                    }
                     candidato.setCpf(dados.getCpf());
                     candidato.setNome(dados.getNome());
                     candidato.setTelefone(dados.getTelefone());
@@ -57,7 +66,8 @@ public class CandidatoRestController {
                     candidato.setPeriodo(dados.getPeriodo());
                     candidato.setCidade(dados.getCidade());
                     candidato.setCurriculo(dados.getCurriculo());
-                    return ResponseEntity.ok(candidatoRepository.save(candidato));
+                    candidatoRepository.save(candidato);
+                    return ResponseEntity.ok(candidato);
                 })
                 .orElse(ResponseEntity.notFound().build());
     }

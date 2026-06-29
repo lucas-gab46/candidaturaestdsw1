@@ -2,65 +2,65 @@
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Nova Vaga</title>
+    <title th:text="#{pagina.cadastraVaga}">Nova Vaga</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
 <header>
     <div>
-        <h1>Cadastro de Vaga</h1>
+        <h1 th:text="#{pagina.cadastraVaga}">Cadastro de Vaga</h1>
     </div>
     <nav>
-        <a th:href="@{/empresa/vagas}">Voltar</a>
-        <a th:href="@{/logout}">Sair</a>
+        <a th:href="@{/empresa/vagas}" th:text="#{btn.voltar}">Voltar</a>
+        <a th:href="@{/logout}" th:text="#{btn.sair}">Sair</a>
     </nav>
 </header>
 <main>
     <form th:action="@{/empresa/vagas}" th:object="${vaga}" method="post">
         <div>
-            <label for="titulo">Título da vaga</label>
+            <label for="titulo" th:text="#{vaga.nome}">Título da vaga</label>
             <input type="text" id="titulo" th:field="*{titulo}" required>
         </div>
         <div>
-            <label for="descricao">Descrição</label>
+            <label for="descricao" th:text="#{vaga.descricao}">Descrição</label>
             <textarea id="descricao" th:field="*{descricao}" required></textarea>
         </div>
         <div>
-            <label for="areaAtuacao">Área de atuação</label>
+            <label for="areaAtuacao" th:text="#{vaga.area}">Área de atuação</label>
             <input type="text" id="areaAtuacao" th:field="*{areaAtuacao}" required>
         </div>
         <div>
-            <label for="requisitos">Requisitos</label>
+            <label for="requisitos" th:text="#{vaga.requisitos}">Requisitos</label>
             <textarea id="requisitos" th:field="*{requisitos}" required></textarea>
         </div>
         <div>
-            <label for="cargaHoraria">Carga horária (horas/semana)</label>
+            <label for="cargaHoraria" th:text="#{vaga.duracao}">Carga horária (horas/semana)</label>
             <input type="number" id="cargaHoraria" th:field="*{cargaHoraria}" min="1" required>
         </div>
         <div>
-            <label for="modalidade">Modalidade</label>
+            <label for="modalidade" th:text="#{vaga.area}">Modalidade</label>
             <select id="modalidade" th:field="*{modalidade}" required>
                 <option th:each="modalidade : ${modalidades}" th:value="${modalidade}" th:text="${modalidade}"></option>
             </select>
         </div>
         <div>
-            <label for="valorBolsa">Remuneração</label>
+            <label for="valorBolsa" th:text="#{vaga.salario}">Remuneração</label>
             <input type="number" step="0.01" id="valorBolsa" th:field="*{valorBolsa}" required>
         </div>
         <div>
-            <label for="beneficios">Benefícios</label>
+            <label for="beneficios" th:text="#{form.beneficios}">Benefícios</label>
             <textarea id="beneficios" th:field="*{beneficios}"></textarea>
         </div>
         <div>
-            <label for="cidade">Cidade</label>
+            <label for="cidade" th:text="#{vaga.local}">Cidade</label>
             <input type="text" id="cidade" th:field="*{cidade}" required>
         </div>
         <div>
-            <label for="dataLimite">Data limite de inscrição</label>
+            <label for="dataLimite" th:text="#{vaga.dataCriacao}">Data limite de inscrição</label>
             <input type="date" id="dataLimite" th:field="*{dataLimite}" required>
         </div>
         <div>
-            <button type="submit">Cadastrar vaga</button>
+            <button type="submit" th:text="#{btn.cadastrarVaga}">Cadastrar vaga</button>
         </div>
     </form>
 </main>

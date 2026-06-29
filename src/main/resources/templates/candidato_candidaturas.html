@@ -8,12 +8,12 @@
 <body>
 <header>
     <nav>
-        <a th:if="${session.empresaId == null and session.admin != true and session.candidatoId == null}" th:href="@{/login}">Login Empresarial</a>
-        <a th:if="${session.candidatoId == null}" th:href="@{/candidato/login}">Login Candidato</a>
+        <a th:if="${session.empresaId == null and (session.admin == null or session.admin == false) and session.candidatoId == null}" th:href="@{/login}">Login Empresarial</a>
+        <a th:if="${session.candidatoId == null}" th:href="@{/login(role='candidate')}">Login Candidato</a>
         <a th:if="${session.candidatoId == null}" th:href="@{/candidato/register}">Cadastro Candidato</a>
         <a th:if="${session.empresaId != null}" th:href="@{/empresa/vagas}">Painel da Empresa</a>
         <a th:if="${session.admin == true}" th:href="@{/admin/empresas}">Painel da Administração</a>
-        <a th:if="${session.empresaId != null or session.admin == true or session.candidatoId != null}" th:href="@{/logout}">Sair</a>
+        <a th:if="${session.empresaId != null or (session.admin != null and session.admin == true) or session.candidatoId != null}" th:href="@{/logout}">Sair</a>
     </nav>
 </header>
 <main>
@@ -26,14 +26,24 @@
         </section>
         <section class="card" th:each="candidatura : ${candidaturas}">
             <h2 th:text="${candidatura.vaga.titulo}">Título da vaga</h2>
-            <p><strong>Empresa:</strong> <span th:text="${candidatura.vaga.empresa.nome}">Empresa</span></p>
-            <p><strong>Status:</strong> <span th:text="${candidatura.status}">Status</span></p>
-            <p><strong>Data da candidatura:</strong> <span th:text="${candidatura.dataCandidatura}">Data</span></p>
-            <p><strong>Mensagem:</strong> <span th:text="${candidatura.mensagemApresentacao}">Mensagem</span></p>
-            <p><strong>Currículo:</strong> <span th:text="${candidatura.curriculo}">Currículo</span></p>
-            <div th:if="${candidatura.status == T(br.com.lucas.candidaturaestagio.model.StatusCandidatura).APROVADO}">
-                <p><strong>Entrevista:</strong> <span th:text="${candidatura.dataEntrevista}">Data</span> às <span th:text="${candidatura.horarioEntrevista}">Horário</span></p>
-                <p><strong>Link:</strong> <a th:href="${candidatura.linkVideoconferencia}" th:text="${candidatura.linkVideoconferencia}"></a></p>
+            <p><strong th:text="#{vaga.empresa}">Empresa:</strong> <span th:text="${candidatura.vaga.empresa.nome}">Empresa</span></p>
+            <p><strong th:text="#{candidatura.status}">Status:</strong> <span th:text="#{status.${candidatura.status}}">Status</span></p>
+            <p><strong th:text="#{candidatura.dataCandidatura}">Data da candidatura:</strong> <span th:text="${candidatura.dataCandidatura}">Data</span></p>
+            <p><strong th:text="#{candidatura.detalhes}">Mensagem:</strong> <span th:text="${candidatura.mensagemApresentacao}">Mensagem</span></p>
+            <p><strong th:text="#{candidato.curriculo}">Currículo:</strong> <span th:text="${candidatura.curriculo}">Currículo</span></p>
+            <div th:if="${candidatura.status == T(br.com.lucas.candidaturaestagio.model.StatusCandidatura).APROVADO or candidatura.status == T(br.com.lucas.candidaturaestagio.model.StatusCandidatura).ENTREVISTA_AGENDADA}">
+                <p><strong th:text="#{candidatura.entrevista}">Entrevista:</strong></p>
+                <p><span th:text="${candidatura.dataEntrevista}">Data</span> às <span th:text="${candidatura.horarioEntrevista}">Horário</span></p>
+                <p th:if="${candidatura.linkVideoconferencia != null and candidatura.linkVideoconferencia != ''}">
+                    <strong th:text="#{candidatura.linkVideoconferencia}">Link da Videoconferência:</strong>
+                    <a th:href="${candidatura.linkVideoconferencia}" th:text="${candidatura.linkVideoconferencia}">Link</a>
+                </p>
+                <p th:if="${candidatura.status == T(br.com.lucas.candidaturaestagio.model.StatusCandidatura).ENTREVISTA_AGENDADA}">
+                    <strong>Detalhes:</strong> Sua entrevista foi agendada. Confira seu email para confirmar presença.
+                </p>
+                <p th:if="${candidatura.status == T(br.com.lucas.candidaturaestagio.model.StatusCandidatura).APROVADO}">
+                    <strong>Detalhes:</strong> Sua candidatura foi selecionada. Aguarde a próxima comunicação da empresa.
+                </p>
             </div>
             <div th:if="${candidatura.status == T(br.com.lucas.candidaturaestagio.model.StatusCandidatura).RECUSADO}">
                 <p><strong>Justificativa:</strong> <span th:text="${candidatura.justificativaRecusa}">Justificativa</span></p>

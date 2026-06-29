@@ -4,31 +4,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" th:href="@{/css/style.css}">
-    <title>Login Administrativo</title>
+    <title th:text="#{login.title}">Login</title>
 </head>
 <body>
 <div class="login-container">
-    <h1>Login Administrativo</h1>
-    <p class="subtitle">Acesse o painel corporativo para gerenciar vagas e profissionais.</p>
+    <div class="language-switch">
+        <a th:href="@{/login(role=${selectedRole}, lang='pt_BR')}" th:text="'PT'">PT</a>
+        <span> | </span>
+        <a th:href="@{/login(role=${selectedRole}, lang='en')}" th:text="'EN'">EN</a>
+    </div>
+ 
+    <h1 th:text="#{login.title}">Login Empresarial/Candidato</h1>
     <form th:action="@{/login}" method="post" autocomplete="on">
         <div class="form-action">
-            <label for="username">Usuário:</label>
-            <input type="text" id="username" name="username" required autofocus>
-            <label for="password">Senha:</label>
+            <label for="role" th:text="#{login.selectRole}">Selecione o perfil</label>
+            <select id="role" name="role">
+                <option th:value="candidate" th:text="#{login.role.candidate}" th:selected="${selectedRole == 'candidate'}">Candidato</option>
+                <option th:value="company" th:text="#{login.role.company}" th:selected="${selectedRole == 'company'}">Empresa / Administrador</option>
+            </select>
+
+            <label for="username" th:text="#{login.email}">Email</label>
+            <input type="email" id="username" name="username" required autofocus>
+
+            <label for="password" th:text="#{login.password}">Senha</label>
             <input type="password" id="password" name="password" required>
         </div>
 
         <div class="form-submit">
-            <button type="submit">Entrar</button>
+            <button type="submit" th:text="#{btn.entrar}">Entrar</button>
         </div>
 
         <div class="form-request">
-            <p>Use seu e-mail Administrativo para acessar.</p>
-            <button type="button" onclick="window.location.href='#'">Recuperar senha</button>
+            <p th:text="${selectedRole == 'candidate'} ? #{login.candidateHint} : #{login.companyHint}">Use seu email correspondente.</p>
+            <a th:href="@{/login(role=${selectedRole})}" th:text="#{login.forgotPassword}">Recuperar senha</a>
         </div>
 
-        <div th:if="${error}" class="error-message" th:text="${error}"></div>
+        <div th:if="${errorMessageCode}" class="error-message" th:text="#{${errorMessageCode}}">Erro</div>
     </form>
+
+    <div class="login-switch">
+        <p th:text="#{msg.aindaNaoTemConta}">Ainda não tem uma conta?</p>
+        <a th:if="${selectedRole == 'candidate'}" th:href="@{/candidato/register}" th:text="#{btn.registrar}">Registrar</a>
+        <a th:if="${selectedRole != 'candidate'}" th:href="@{/empresa/register}" th:text="#{empresa.register}">Registrar Empresa</a>
+    </div>
 </div>
 </body>
 </html>

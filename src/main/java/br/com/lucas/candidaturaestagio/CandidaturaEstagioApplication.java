@@ -14,6 +14,7 @@ import br.com.lucas.candidaturaestagio.repository.CandidatoRepository;
 import br.com.lucas.candidaturaestagio.repository.CandidaturaRepository;
 import br.com.lucas.candidaturaestagio.repository.EmpresaRepository;
 import br.com.lucas.candidaturaestagio.repository.VagaRepository;
+import br.com.lucas.candidaturaestagio.service.AdministradorService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -39,6 +40,7 @@ public class CandidaturaEstagioApplication extends SpringBootServletInitializer 
     @Bean
     CommandLineRunner executarCrudInicial(
             AdministradorRepository administradorRepository,
+            AdministradorService administradorService,
             CandidatoRepository candidatoRepository,
             EmpresaRepository empresaRepository,
             VagaRepository vagaRepository,
@@ -49,7 +51,7 @@ public class CandidaturaEstagioApplication extends SpringBootServletInitializer 
 
             // CREATE: administrador inicial exigido no projeto.
             Administrador administrador = new Administrador("admin@sistema.com", "admin123");
-            administradorRepository.save(administrador);
+            administradorService.registrar(administrador);
 
             // CREATE: empresa, candidato, vaga e candidatura.
             Empresa empresa = new Empresa(

@@ -8,13 +8,12 @@
 <body>
 <header>
     <nav>
-        <a th:if="${session.empresaId == null and session.admin != true and session.candidatoId == null}" th:href="@{/login}">Login Empresarial</a>
-        <a th:if="${session.candidatoId == null}" th:href="@{/candidato/login}">Login Candidato</a>
-        <a th:if="${session.candidatoId == null}" th:href="@{/candidato/register}">Cadastro Candidato</a>
-        <a th:if="${session.empresaId != null}" th:href="@{/empresa/vagas}">Painel da Empresa</a>
-        <a th:if="${session.admin == true}" th:href="@{/admin/empresas}">Painel da Administração</a>
-        <a th:if="${session.empresaId != null or session.admin == true or session.candidatoId != null}" th:href="@{/logout}">Sair</a>
-    </nav>
+        <a th:if="${session.empresaId == null and (session.admin == null or session.admin == false) and session.candidatoId == null}" th:href="@{/login}" th:text="#{nav.login}">Login Empresarial</a>
+        <a th:if="${session.candidatoId == null}" th:href="@{/login(role='candidate')}" th:text="#{candidato.login}">Login Candidato</a>
+        <a th:if="${session.candidatoId == null}" th:href="@{/candidato/register}" th:text="#{candidato.register}">Cadastro Candidato</a>
+        <a th:if="${session.empresaId != null}" th:href="@{/empresa/vagas}" th:text="#{empresa.painel}">Painel da Empresa</a>
+        <a th:if="${session.admin == true}" th:href="@{/admin/empresas}" th:text="#{admin.painel}">Painel da Administração</a>
+        <a th:if="${session.empresaId != null or (session.admin != null and session.admin == true) or session.candidatoId != null}" th:href="@{/logout}" th:text="#{nav.sair}">Sair</a>
 </header>
 <main>
     <section class="card">

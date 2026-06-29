@@ -2,6 +2,7 @@ package br.com.lucas.candidaturaestagio.controller;
 
 import br.com.lucas.candidaturaestagio.model.Empresa;
 import br.com.lucas.candidaturaestagio.repository.EmpresaRepository;
+import br.com.lucas.candidaturaestagio.service.EmpresaService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -20,9 +21,11 @@ import java.util.Optional;
 public class EmpresaController {
 
     private final EmpresaRepository empresaRepository;
+    private final EmpresaService empresaService;
 
-    public EmpresaController(EmpresaRepository empresaRepository) {
+    public EmpresaController(EmpresaRepository empresaRepository, EmpresaService empresaService) {
         this.empresaRepository = empresaRepository;
+        this.empresaService = empresaService;
     }
 
     private boolean isAdmin(HttpSession session) {
@@ -63,7 +66,13 @@ public class EmpresaController {
             return "empresa_form";
         }
         try {
-            empresaRepository.save(empresa);
+            // Se é uma empresa nova (sem ID), usar service para criptografar senha
+            if (empresa.getId() == null) {
+                empresaService.registrar(empresa);
+            } else {
+                // Se é uma atualização, salvar normalmente (a senha já está criptografada no banco)
+                empresaRepository.save(empresa);
+            }
         } catch (Exception ex) {
             model.addAttribute("error", "Não foi possível salvar a empresa. Verifique os dados e tente novamente.");
             model.addAttribute("empresa", empresa);

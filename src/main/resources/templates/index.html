@@ -2,33 +2,58 @@
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Sistema de Estágios</title>
+    <title th:text="#{app.titulo}">Sistema de Estágios</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
 <header>
-    <div>
-        <h1>Sistema para Candidatura e Seleção de Vagas de Estágio</h1>
-        <h1>lucas-gab46</h1>
-        <p>Projeto T5 a T8.</p>
+
+    <h1 th:text="#{app.titulo}">Sistema de Estágios</h1>
+    <h2>Sistema feito do T5 AO T8, jpa,thyleaf,bd,web, e REST-API</h2>
+    <div class="language-switcher">
+
+     
+    <nav>
+        <a th:if="${session.empresaId == null and (session.admin == null or session.admin == false) and session.candidatoId == null}" th:href="@{/login}" th:text="#{nav.login}">Login</a>
+        <a th:if="${session.candidatoId == null}" th:href="@{/candidato/register}" th:text="#{candidato.register}">Candidato</a>
+        <a th:if="${session.empresaId != null}" th:href="@{/empresa/vagas}" th:text="#{empresa.painel}">Painel da Empresa</a>
+        <a th:if="${session.admin == true}" th:href="@{/admin/empresas}" th:text="#{admin.painel}">Painel do Administrador</a>
+        <a th:if="${session.empresaId != null or (session.admin != null and session.admin == true) or session.candidatoId != null}" th:href="@{/logout}" th:text="#{nav.logout}">Logout</a>
+    </nav>
+        <a th:href="@{/(lang='en')}" th:text="'EN'"></a>
+        <a th:href="@{/(lang='pt')}" th:text="'PT'"></a>
     </div>
     <nav>
-        <a th:if="${session.empresaId == null and session.admin != true and session.candidatoId == null}" th:href="@{/login}">Login Empresarial</a>
-        <a th:if="${session.candidatoId == null}" th:href="@{/candidato/login}">Login Candidato</a>
-        <a th:if="${session.candidatoId == null}" th:href="@{/candidato/register}">Cadastro Candidato</a>
-        <a th:if="${session.empresaId != null}" th:href="@{/empresa/vagas}">Painel da Empresa</a>
-        <a th:if="${session.admin == true}" th:href="@{/admin/empresas}">Painel da Administração</a>
-        <a th:if="${session.empresaId != null or session.admin == true or session.candidatoId != null}" th:href="@{/logout}">Sair</a>
+        <a th:if="${session.empresaId == null and session.admin != true and session.candidatoId == null}" th:href="@{/login}" th:text="#{nav.login}">Login</a>
+        <a th:if="${session.candidatoId == null}" th:href="@{/candidato/register}" th:text="#{candidato.register}">Candidato</a>
+        <a th:if="${session.empresaId != null}" th:href="@{/empresa/vagas}" th:text="#{empresa.painel}">Painel da Empresa</a>
+        <a th:if="${session.admin == true}" th:href="@{/admin/empresas}" th:text="#{admin.painel}">Painel do Administrador</a>
+        <a th:if="${session.empresaId != null or session.admin == true or session.candidatoId != null}" th:href="@{/logout}" th:text="#{nav.logout}">Logout</a>
     </nav>
 </header>
     
 <main>
     <section class="card">
-        <h2>Vagas públicas</h2>
-        <a href="/vagas">Visualizar vagas</a>
+        <h2 th:text="#{vaga.listagem}">Vagas públicas</h2>
+        <p th:text="#{msg.semDados}">Listagem pública de vagas cadastradas no sistema</p>
     </section>
 
-   
+    <section class="card" th:if="${vagas.empty}">
+        <h3 th:text="#{vagas.semRegistro}">Nenhuma vaga encontrada</h3>
+        <p th:text="#{msg.semDados}">Volte mais tarde para ver novas oportunidades.</p>
+    </section>
+
+    <section class="card" th:each="vaga : ${vagas}">
+        <h3 th:text="${vaga.titulo}">Título da vaga</h3>
+        <p><strong th:text="#{vaga.empresa}">Empresa:</strong> <span th:text="${vaga.empresa.nome}">Empresa</span></p>
+        <p><strong th:text="#{vaga.area}">Área:</strong> <span th:text="${vaga.areaAtuacao}">Área</span></p>
+        <p><strong th:text="#{vaga.local}">Cidade:</strong> <span th:text="${vaga.cidade}">Cidade</span></p>
+        <p><strong th:text="#{vaga.modalidade}">Modalidade:</strong> <span th:text="${vaga.modalidade}">Modalidade</span></p>
+        <p><strong th:text="#{vaga.ativa}">Status:</strong> <span th:text="${vaga.status}">Status</span></p>
+        <p><strong th:text="#{vaga.salario}">Bolsa:</strong> R$ <span th:text="${vaga.valorBolsa}">0.00</span></p>
+        <p><strong th:text="#{vaga.descricao}">Descrição:</strong> <span th:text="${vaga.descricao}">Descrição</span></p>
+        <a th:href="@{/vagas}" th:text="#{vaga.detalhes}">Ver vagas</a>
+    </section>
 </main>
 </body>
 </html>

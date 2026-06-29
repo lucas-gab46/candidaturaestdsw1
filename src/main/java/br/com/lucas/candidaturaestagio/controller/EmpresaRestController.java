@@ -2,6 +2,7 @@ package br.com.lucas.candidaturaestagio.controller;
 
 import br.com.lucas.candidaturaestagio.model.Empresa;
 import br.com.lucas.candidaturaestagio.repository.EmpresaRepository;
+import br.com.lucas.candidaturaestagio.service.EmpresaService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,9 +21,11 @@ import java.util.List;
 public class EmpresaRestController {
 
     private final EmpresaRepository empresaRepository;
+    private final EmpresaService empresaService;
 
-    public EmpresaRestController(EmpresaRepository empresaRepository) {
+    public EmpresaRestController(EmpresaRepository empresaRepository, EmpresaService empresaService) {
         this.empresaRepository = empresaRepository;
+        this.empresaService = empresaService;
     }
 
     @GetMapping
@@ -39,7 +42,7 @@ public class EmpresaRestController {
 
     @PostMapping
     public Empresa cadastrar(@Valid @RequestBody Empresa empresa) {
-        return empresaRepository.save(empresa);
+        return empresaService.registrar(empresa);
     }
 
     @PutMapping("/{id}")
@@ -47,14 +50,21 @@ public class EmpresaRestController {
         return empresaRepository.findById(id)
                 .map(empresa -> {
                     empresa.setEmail(dados.getEmail());
-                    empresa.setSenha(dados.getSenha());
+                    if (dados.getSenha() != null && !dados.getSenha().isEmpty() && !dados.getSenha().startsWith("$2a$")) {
+                        empresa.setSenha(dados.getSenha());
+                        empresaService.registrar(empresa);
+                    } else if (dados.getSenha() != null && !dados.getSenha().isEmpty()) {
+                        empresa.setSenha(dados.getSenha());
+                        empresaRepository.save(empresa);
+                    }
                     empresa.setCnpj(dados.getCnpj());
                     empresa.setNome(dados.getNome());
                     empresa.setTelefone(dados.getTelefone());
                     empresa.setAreaAtuacao(dados.getAreaAtuacao());
                     empresa.setCidade(dados.getCidade());
                     empresa.setDescricao(dados.getDescricao());
-                    return ResponseEntity.ok(empresaRepository.save(empresa));
+                    empresaRepository.save(empresa);
+                    return ResponseEntity.ok(empresa);
                 })
                 .orElse(ResponseEntity.notFound().build());
     }

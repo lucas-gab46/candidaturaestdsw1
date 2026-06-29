@@ -2,49 +2,48 @@
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Vagas de Estágio</title>
+    <title th:text="#{vaga.listagem}">Vagas de Estágio</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
+<body>
 <header>
     <div>
         <h1 th:text="#{vaga.listagem}">Vagas de Estágio</h1>
-        <p>Listagem pública de vagas cadastradas no sistema</p>
+        <p th:text="#{msg.semDados}">Listagem pública de vagas cadastradas no sistema</p>
     </div>
     <nav>
-        <a th:if="${session.empresaId == null and session.admin != true and session.candidatoId == null}" th:href="@{/login}">Login Empresarial</a>
-        <a th:if="${session.candidatoId == null}" th:href="@{/candidato/login}">Login Candidato</a>
-        <a th:if="${session.candidatoId == null}" th:href="@{/candidato/register}">Cadastro Candidato</a>
-        <a th:if="${session.empresaId != null}" th:href="@{/empresa/vagas}">Painel da Empresa</a>
-        <a th:if="${session.admin == true}" th:href="@{/admin/empresas}">Gerenciar Empresas</a>
-        <a th:if="${session.empresaId != null or session.admin == true or session.candidatoId != null}" th:href="@{/logout}">Sair</a>
+        <a th:if="${session.empresaId == null and (session.admin == null or session.admin == false) and session.candidatoId == null}" th:href="@{/login}">[[#{nav.login}]]</a>
+        <a th:if="${session.candidatoId == null}" th:href="@{/login(role='candidate')}">[[#{candidato.login}]]</a>
+        <a th:if="${session.candidatoId == null}" th:href="@{/candidato/register}">[[#{candidato.register}]]</a>
+        <a th:if="${session.empresaId != null}" th:href="@{/empresa/vagas}">[[#{empresa.painel}]]</a>
+        <a th:if="${session.admin == true}" th:href="@{/admin/empresas}">[[#{admin.painel}]]</a>
+        <a th:if="${session.empresaId != null or (session.admin != null and session.admin == true) or session.candidatoId != null}" th:href="@{/logout}">[[#{nav.sair}]]</a>
     </nav>
-</header>
 </header>
 
 <main>
     <section class="card" th:if="${vagas.empty}">
-        <h2>Nenhuma vaga encontrada</h2>
-        <p>Volte mais tarde para ver novas oportunidades.</p>
+        <h2 th:text="#{vagas.semRegistro}">Nenhuma vaga encontrada</h2>
+        <p th:text="#{msg.semDados}">Volte mais tarde para ver novas oportunidades.</p>
     </section>
 
     <section class="card" th:each="vaga : ${vagas}">
         <h2 th:text="${vaga.titulo}">Título da vaga</h2>
-        <p><strong>Empresa:</strong> <span th:text="${vaga.empresa.nome}">Empresa</span></p>
-        <p><strong>Área:</strong> <span th:text="${vaga.areaAtuacao}">Área</span></p>
-        <p><strong>Modalidade:</strong> <span th:text="${vaga.modalidade}">Modalidade</span></p>
-        <p><strong>Cidade:</strong> <span th:text="${vaga.cidade}">Cidade</span></p>
-        <p><strong>Status:</strong> <span th:text="${vaga.status}">Status</span></p>
-        <p><strong>Bolsa:</strong> R$ <span th:text="${vaga.valorBolsa}">0.00</span></p>
-        <p><strong>Benefícios:</strong> <span th:text="${vaga.beneficios}">Benefícios</span></p>
-        <p><strong>Requisitos:</strong> <span th:text="${vaga.requisitos}">Requisitos</span></p>
-        <p><strong>Descrição:</strong> <span th:text="${vaga.descricao}">Descrição</span></p>
+        <p><strong th:text="#{vaga.empresa}">Empresa:</strong> <span th:text="${vaga.empresa.nome}">Empresa</span></p>
+        <p><strong th:text="#{vaga.area}">Área:</strong> <span th:text="${vaga.areaAtuacao}">Área</span></p>
+        <p><strong th:text="#{vaga.modalidade}">Modalidade:</strong> <span th:text="${vaga.modalidade}">Modalidade</span></p>
+        <p><strong th:text="#{vaga.local}">Cidade:</strong> <span th:text="${vaga.cidade}">Cidade</span></p>
+        <p><strong th:text="#{vaga.ativa}">Status:</strong> <span th:text="${vaga.status}">Status</span></p>
+        <p><strong th:text="#{vaga.salario}">Bolsa:</strong> R$ <span th:text="${vaga.valorBolsa}">0.00</span></p>
+        <p><strong th:text="#{vaga.requisitos}">Requisitos:</strong> <span th:text="${vaga.requisitos}">Requisitos</span></p>
+        <p><strong th:text="#{vaga.descricao}">Descrição:</strong> <span th:text="${vaga.descricao}">Descrição</span></p>
 
         <div th:if="${session.candidatoId != null}">
-            <a th:if="${vagasInscritas[vaga.id] == true}" th:href="@{/candidato/candidaturas}">Candidatado</a>
-            <a th:if="${vagasInscritas[vaga.id] != true}" th:href="@{/candidato/vagas/{id}/candidatar(id=${vaga.id})}">Inscrever-se</a>
+            <a th:if="${vagasInscritas[vaga.id] == true}" th:href="@{/candidato/candidaturas}" th:text="#{candidatura.titulo}">Candidatado</a>
+            <a th:if="${vagasInscritas[vaga.id] != true}" th:href="@{/candidato/vagas/{id}/candidatar(id=${vaga.id})}" th:text="#{vaga.candidar}">Inscrever-se</a>
         </div>
         <div th:if="${session.candidatoId == null}">
-            <a th:href="@{/candidato/login}">Entrar para candidatar</a>
+            <a th:href="@{/login(role='candidate')}" th:text="#{candidato.login}">Entrar para candidatar</a>
         </div>
     </section>
 </main>

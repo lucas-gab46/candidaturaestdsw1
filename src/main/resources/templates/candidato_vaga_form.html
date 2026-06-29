@@ -2,42 +2,44 @@
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Candidatar-se a Vaga</title>
+    <title th:text="#{vaga.candidar}">Candidatar-se a Vaga</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
 <header>
     <nav>
-        <a th:if="${session.empresaId == null and session.admin != true and session.candidatoId == null}" th:href="@{/login}">Login Empresarial</a>
-        <a th:if="${session.candidatoId == null}" th:href="@{/candidato/login}">Login Candidato</a>
-        <a th:if="${session.candidatoId == null}" th:href="@{/candidato/register}">Cadastro Candidato</a>
-        <a th:if="${session.empresaId != null}" th:href="@{/empresa/vagas}">Painel da Empresa</a>
-        <a th:if="${session.admin == true}" th:href="@{/admin/empresas}">Painel da Administração</a>
-        <a th:if="${session.empresaId != null or session.admin == true or session.candidatoId != null}" th:href="@{/logout}">Sair</a>
+        <a th:if="${session.empresaId == null and (session.admin == null or session.admin == false) and session.candidatoId == null}" th:href="@{/login}">[[#{nav.login}]]</a>
+        <a th:if="${session.candidatoId == null}" th:href="@{/login(role='candidate')}">[[#{candidato.login}]]</a>
+        <a th:if="${session.candidatoId == null}" th:href="@{/candidato/register}">[[#{candidato.register}]]</a>
+        <a th:if="${session.empresaId != null}" th:href="@{/empresa/vagas}">[[#{empresa.painel}]]</a>
+        <a th:if="${session.admin == true}" th:href="@{/admin/empresas}">[[#{admin.painel}]]</a>
+        <a th:if="${session.empresaId != null or (session.admin != null and session.admin == true) or session.candidatoId != null}" th:href="@{/logout}">[[#{btn.sair}]]</a>
     </nav>
 </header>
 <main>
     <section class="card">
         <h1 th:text="${vaga.titulo}">Candidatar-se</h1>
-        <p><strong>Empresa:</strong> <span th:text="${vaga.empresa.nome}"></span></p>
-        <p><strong>Descrição:</strong> <span th:text="${vaga.descricao}"></span></p>
-        <p><strong>Requisitos:</strong> <span th:text="${vaga.requisitos}"></span></p>
-        <p><strong>Bolsa:</strong> R$ <span th:text="${vaga.valorBolsa}"></span></p>
+        <p><strong th:text="#{vaga.empresa}">Empresa:</strong> <span th:text="${vaga.empresa.nome}"></span></p>
+        <p><strong th:text="#{vaga.descricao}">Descrição:</strong> <span th:text="${vaga.descricao}"></span></p>
+        <p><strong th:text="#{vaga.requisitos}">Requisitos:</strong> <span th:text="${vaga.requisitos}"></span></p>
+        <p><strong th:text="#{vaga.salario}">Bolsa:</strong> R$ <span th:text="${vaga.valorBolsa}"></span></p>
 
-        <form th:action="@{/candidato/vagas/{id}/candidatar(id=${vaga.id})}" th:object="${candidatura}" method="post">
-            <label for="mensagemApresentacao">Mensagem de apresentação</label>
-            <div></div>
+        <form th:action="@{/candidato/vagas/{id}/candidatar(id=${vaga.id})}" th:object="${candidatura}" method="post" enctype="multipart/form-data">
+            <label for="mensagemApresentacao" th:text="#{candidatura.mensagemApresentacao}">Mensagem de apresentação</label>
             <textarea id="mensagemApresentacao" th:field="*{mensagemApresentacao}" rows="5" required></textarea>
             <div th:errors="*{mensagemApresentacao}" class="error-message"></div>
 
-            <label for="curriculo">Currículo</label>
+            <label for="curriculo" th:text="#{candidato.curriculo}">Currículo</label>
             <textarea id="curriculo" th:field="*{curriculo}" rows="5"></textarea>
             <div th:errors="*{curriculo}" class="error-message"></div>
 
-            <button type="submit">Enviar candidatura</button>
+            <label for="resumeFile" th:text="#{form.uploadCurriculo}">Upload de Currículo (opcional)</label>
+            <input type="file" id="resumeFile" name="resumeFile" accept=".txt,.pdf,.doc,.docx">
+
+            <button type="submit" th:text="#{btn.enviarCandidatura}">Enviar candidatura</button>
         </form>
         <div th:if="${#fields.hasErrors('*')}">
-            <p class="error-message">Erro no formulário.</p>
+            <p class="error-message" th:text="#{erro.generico}">Erro no formulário.</p>
         </div>
     </section>
 </main>

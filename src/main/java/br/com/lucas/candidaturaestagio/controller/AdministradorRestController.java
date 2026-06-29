@@ -2,6 +2,7 @@ package br.com.lucas.candidaturaestagio.controller;
 
 import br.com.lucas.candidaturaestagio.model.Administrador;
 import br.com.lucas.candidaturaestagio.repository.AdministradorRepository;
+import br.com.lucas.candidaturaestagio.service.AdministradorService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,9 +21,11 @@ import java.util.List;
 public class AdministradorRestController {
 
     private final AdministradorRepository administradorRepository;
+    private final AdministradorService administradorService;
 
-    public AdministradorRestController(AdministradorRepository administradorRepository) {
+    public AdministradorRestController(AdministradorRepository administradorRepository, AdministradorService administradorService) {
         this.administradorRepository = administradorRepository;
+        this.administradorService = administradorService;
     }
 
     @GetMapping
@@ -39,7 +42,7 @@ public class AdministradorRestController {
 
     @PostMapping
     public Administrador cadastrar(@Valid @RequestBody Administrador administrador) {
-        return administradorRepository.save(administrador);
+        return administradorService.registrar(administrador);
     }
 
     @PutMapping("/{id}")
@@ -47,8 +50,15 @@ public class AdministradorRestController {
         return administradorRepository.findById(id)
                 .map(administrador -> {
                     administrador.setEmail(dados.getEmail());
-                    administrador.setSenha(dados.getSenha());
-                    return ResponseEntity.ok(administradorRepository.save(administrador));
+                    if (dados.getSenha() != null && !dados.getSenha().isEmpty() && !dados.getSenha().startsWith("$2a$")) {
+                        administrador.setSenha(dados.getSenha());
+                        administradorService.registrar(administrador);
+                    } else if (dados.getSenha() != null && !dados.getSenha().isEmpty()) {
+                        administrador.setSenha(dados.getSenha());
+                        administradorRepository.save(administrador);
+                    }
+                    administradorRepository.save(administrador);
+                    return ResponseEntity.ok(administrador);
                 })
                 .orElse(ResponseEntity.notFound().build());
     }

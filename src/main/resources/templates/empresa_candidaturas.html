@@ -1,37 +1,42 @@
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{empresa.candidaturas}">Candidaturas Recebidas</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
 <header>
     <nav>
-        <a th:if="${session.empresaId == null and session.admin != true and session.candidatoId == null}" th:href="@{/login}">Login Empresarial</a>
-        <a th:if="${session.candidatoId == null}" th:href="@{/candidato/login}">Login Candidato</a>
-        <a th:if="${session.candidatoId == null}" th:href="@{/candidato/register}">Cadastro Candidato</a>
-        <a th:if="${session.empresaId != null}" th:href="@{/empresa/vagas}">Painel da Empresa</a>
-        <a th:if="${session.admin == true}" th:href="@{/admin/empresas}">Painel da Administração</a>
-        <a th:if="${session.empresaId != null or session.admin == true or session.candidatoId != null}" th:href="@{/logout}">Sair</a>
-    </nav>
-</header>
-    <nav>
-        <a th:href="@{/}">Início</a>
-        <a th:href="@{/empresa/vagas}">Minhas Vagas</a>
-        <a th:href="@{/logout}">Sair</a>
+        <a th:if="${session.empresaId == null and (session.admin == null or session.admin == false) and session.candidatoId == null}" th:href="@{/login}">[[#{nav.login}]]</a>
+        <a th:if="${session.candidatoId == null}" th:href="@{/candidato/login}">[[#{candidato.login}]]</a>
+        <a th:if="${session.candidatoId == null}" th:href="@{/candidato/register}">[[#{candidato.register}]]</a>
+        <a th:if="${session.empresaId != null}" th:href="@{/empresa/vagas}">[[#{empresa.painel}]]</a>
+        <a th:if="${session.admin == true}" th:href="@{/admin/empresas}">[[#{admin.painel}]]</a>
+        <a th:if="${session.empresaId != null or (session.admin != null and session.admin == true) or session.candidatoId != null}" th:href="@{/logout}">[[#{btn.sair}]]</a>
     </nav>
 </header>
 <main>
+    <nav>
+        <a th:href="@{/}" th:text="#{nav.home}">Início</a>
+        <a th:href="@{/empresa/vagas}" th:text="#{empresa.vagas}">Minhas Vagas</a>
+        <a th:href="@{/logout}" th:text="#{btn.sair}">Sair</a>
+    </nav>
+
     <section class="card">
-        <h1>Candidaturas Recebidas</h1>
+        <h1 th:text="#{empresa.candidaturas}">Candidaturas Recebidas</h1>
         <section class="card" th:if="${candidaturas.empty}">
-            <h2>Nenhuma candidatura recebida ainda.</h2>
-            <p>Suas vagas ainda não possuem candidaturas ou ainda estão abertas.</p>
+            <h2 th:text="#{msg.semDados}">Nenhuma candidatura recebida ainda.</h2>
+            <p th:text="#{msg.nenhumResultado}">Suas vagas ainda não possuem candidaturas ou ainda estão abertas.</p>
         </section>
 
         <section class="card" th:each="candidatura : ${candidaturas}">
             <h2 th:text="${candidatura.vaga.titulo}">Título da vaga</h2>
-            <p><strong>Candidato:</strong> <span th:text="${candidatura.candidato.nome}">Nome</span></p>
-            <p><strong>Status:</strong> <span th:text="${candidatura.status}">Status</span></p>
-            <p><strong>Mensagem:</strong> <span th:text="${candidatura.mensagemApresentacao}">Mensagem</span></p>
-            <p><strong>Currículo:</strong> <span th:text="${candidatura.curriculo}">Currículo</span></p>
-            <p><strong>Data da candidatura:</strong> <span th:text="${candidatura.dataCandidatura}">Data</span></p>
-            <a th:href="@{/empresa/candidaturas/{id}/avaliar(id=${candidatura.id})}">Avaliar candidatura</a>
+            <p><strong th:text="#{candidato.nome}">Candidato:</strong> <span th:text="${candidatura.candidato.nome}">Nome</span></p>
+            <p><strong th:text="#{candidatura.status}">Status:</strong> <span th:text="#{status.${candidatura.status}}">Status</span></p>
+            <p><strong th:text="#{candidatura.mensagemApresentacao}">Mensagem:</strong> <span th:text="${candidatura.mensagemApresentacao}">Mensagem</span></p>
+            <p><strong th:text="#{candidatura.dataCandidatura}">Data da candidatura:</strong> <span th:text="${candidatura.dataCandidatura}">Data</span></p>
+            <a th:href="@{/empresa/candidaturas/{id}/avaliar(id=${candidatura.id})}" th:text="#{btn.editar}">Avaliar candidatura</a>
         </section>
     </section>
 </main>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bem-vindo ao Sistema de Estágios</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        .email-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        .email-header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 600;
+        }
+        .email-body {
+            padding: 40px 20px;
+        }
+        .email-body h2 {
+            color: #667eea;
+            font-size: 20px;
+            margin-top: 0;
+        }
+        .email-body p {
+            margin: 15px 0;
+            color: #555;
+        }
+        .email-body strong {
+            color: #333;
+        }
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 20px 0;
+            font-weight: 600;
+            transition: transform 0.2s;
+        }
+        .cta-button:hover {
+            transform: scale(1.05);
+        }
+        .features {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .features li {
+            margin: 10px 0;
+            margin-left: 20px;
+        }
+        .email-footer {
+            background-color: #f5f5f5;
+            padding: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #888;
+            border-top: 1px solid #e0e0e0;
+        }
+        .email-footer p {
+            margin: 5px 0;
+        }
+        .divider {
+            height: 1px;
+            background-color: #e0e0e0;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="email-header">
+            <h1>🎓 Bem-vindo!</h1>
+        </div>
+
+        <div class="email-body">
+            <h2 th:text="'Olá ' + ${nome} + '!'">Olá!</h2>
+
+            <p>Seu cadastro foi criado com sucesso em nosso <strong>Sistema de Estágios</strong>!</p>
+
+            <p>Agora você pode aproveitar todas as funcionalidades da plataforma para encontrar oportunidades de estágio que se alinham com seu perfil profissional.</p>
+
+            <div class="features">
+                <strong>O que você pode fazer agora:</strong>
+                <ul>
+                    <li>📋 Visualizar vagas de estágio disponíveis</li>
+                    <li>📝 Candidatar-se para posições que correspondem ao seu perfil</li>
+                    <li>👥 Visualizar informações de empresas parceiras</li>
+                    <li>📊 Acompanhar o status de suas candidaturas</li>
+                    <li>⚙️ Atualizar seu perfil e currículo a qualquer momento</li>
+                </ul>
+            </div>
+
+            <div style="text-align: center;">
+                <a href="http://localhost:8080/candidato/vagas" class="cta-button">Explorar Vagas Agora</a>
+            </div>
+
+            <div class="divider"></div>
+
+            <p><strong>Dica:</strong> Mantenha seu perfil sempre atualizado para aumentar as chances de ser selecionado pelas empresas!</p>
+
+            <p>Se você tiver dúvidas ou problemas ao usar a plataforma, não hesite em entrar em contato conosco.</p>
+
+            <p>Boa sorte em sua jornada profissional!</p>
+
+            <p><strong>Atenciosamente,</strong><br>Equipe de Estágios</p>
+        </div>
+
+        <div class="email-footer">
+            <p>Este é um email automático. Por favor, não responda.</p>
+            <p>© 2026 Sistema de Estágios. Todos os direitos reservados.</p>
+        </div>
+    </div>
+</body>
+</html>

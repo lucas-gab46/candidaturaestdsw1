@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entrevista Agendada</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        .email-header {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        .email-header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 600;
+        }
+        .email-body {
+            padding: 40px 20px;
+        }
+        .email-body h2 {
+            color: #3498db;
+            font-size: 20px;
+            margin-top: 0;
+        }
+        .email-body p {
+            margin: 15px 0;
+            color: #555;
+        }
+        .email-body strong {
+            color: #333;
+        }
+        .info-box {
+            background-color: #ecf0f1;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .info-box strong {
+            color: #2980b9;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .interview-details {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .interview-details p {
+            margin: 12px 0;
+            line-height: 1.8;
+        }
+        .interview-details .detail-label {
+            color: #2980b9;
+            font-weight: 600;
+            display: inline-block;
+            width: 120px;
+        }
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 20px 0;
+            font-weight: 600;
+            transition: transform 0.2s;
+        }
+        .cta-button:hover {
+            transform: scale(1.05);
+        }
+        .checklist {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .checklist li {
+            margin: 10px 0;
+            margin-left: 20px;
+        }
+        .email-footer {
+            background-color: #f5f5f5;
+            padding: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #888;
+            border-top: 1px solid #e0e0e0;
+        }
+        .email-footer p {
+            margin: 5px 0;
+        }
+        .divider {
+            height: 1px;
+            background-color: #e0e0e0;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="email-header">
+            <h1>📅 Entrevista Agendada!</h1>
+        </div>
+
+        <div class="email-body">
+            <h2 th:text="'Olá ' + ${nomeCandidato} + '!'">Olá!</h2>
+
+            <p>Ótimas notícias! Sua entrevista foi agendada com sucesso!</p>
+
+            <div class="info-box">
+                <strong>Detalhes da Entrevista:</strong>
+            </div>
+
+            <div class="interview-details">
+                <p><span class="detail-label">🏢 Empresa:</span> <span th:text="${nomeEmpresa}">Empresa</span></p>
+                <p><span class="detail-label">📍 Posição:</span> <span th:text="${nomeVaga}">Posição</span></p>
+                <p><span class="detail-label">📅 Data:</span> <span th:text="${dataEntrevista}">Data</span></p>
+                <p><span class="detail-label">⏰ Horário:</span> <span th:text="${horaEntrevista}">Horário</span></p>
+                <p><span class="detail-label">📝 Tipo:</span> <span th:text="${tipoEntrevista}">Tipo</span></p>
+            </div>
+
+            <div class="divider"></div>
+
+            <p><strong>Informações Importantes:</strong></p>
+            <ul class="checklist">
+                <li>📧 Um email de confirmação foi enviado para você</li>
+                <li>⏰ Por favor, chegue 10 minutos antes do horário agendado</li>
+                <li>📞 Em caso de impossibilidade, avise o quanto antes</li>
+                <li>📄 Leve cópias do seu currículo e documento de identidade</li>
+                <li>👔 Vise-se de forma profissional e apropriada</li>
+                <li>🧠 Prepare-se sobre a empresa e a posição</li>
+            </ul>
+
+            <div style="text-align: center;">
+                <a href="http://localhost:8080/candidato/candidaturas" class="cta-button">Ver Detalhes da Candidatura</a>
+            </div>
+
+            <div class="divider"></div>
+
+            <p><strong>Precisa de ajuda?</strong></p>
+            <p>Se tiver dúvidas sobre a entrevista ou precisar reagendar, entre em contato com a empresa através do número de telefone fornecido.</p>
+
+            <p>Boa sorte na entrevista! 🍀 Esperamos que seja a começar de uma ótima parceria!</p>
+
+            <p><strong>Atenciosamente,</strong><br>Equipe de Estágios</p>
+        </div>
+
+        <div class="email-footer">
+            <p>Este é um email automático. Por favor, não responda.</p>
+            <p>© 2026 Sistema de Estágios. Todos os direitos reservados.</p>
+        </div>
+    </div>
+</body>
+</html>
